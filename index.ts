@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
     async (props: OnSendMessageProps) => {
       const { receiverId, conversation, message } = props;
       try {
-        const receiver = await getUser(receiverId);
+        const receiver = getUser(receiverId);
 
         console.log({ "sendMessage to": receiver });
 
@@ -75,14 +75,24 @@ io.on("connection", (socket) => {
 
   socket.on(
     "gotMessage",
-    async (props: { message: IPMessage }) => {
-      const { message } = props;
-      try {
-        const sender = await getUser(message.senderId._id);
+    async (props: {
+      message: IPMessage;
+      receiverId: string;
+    }) => {
+      const { message, receiverId } = props;
+      console.log({ gotMessage: message, receiverId });
 
+      try {
+        const sender = getUser(message.senderId._id);
         console.log(sender?.socketId);
         io.to(sender?.socketId).emit("receivedMessage", {
           message,
+          receiverId,
+        });
+        console.log({
+          receivedMessage: message,
+          receiverId,
+          sender,
         });
       } catch (error) {
         console.log(error);
@@ -93,16 +103,28 @@ io.on("connection", (socket) => {
   // messages of conversation have been checked
 
   socket.on(
-    "checkMessage",
-    async (props: { messages: IPMessage[] }) => {
-      const { messages } = props;
+    "checkMessages",
+    async (props: {
+      messages: IPMessage[];
+      receiverId: string;
+    }) => {
+      const { messages, receiverId } = props;
+      console.log({
+        checkMessages: messages,
+        receiverId: receiverId,
+      });
+
       try {
         for (const message of messages) {
-          const sender = await getUser(
-            message.senderId._id,
-          );
+          const sender = getUser(message.senderId._id);
           io.to(sender?.socketId).emit("checkedMessage", {
             message,
+            receiverId,
+          });
+          console.log({
+            checkedMessage: message,
+            receiverId,
+            sender,
           });
         }
       } catch (error) {

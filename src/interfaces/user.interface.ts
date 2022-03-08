@@ -8,6 +8,11 @@ export interface IUser {
   coverPicture?: string;
   followersId?: string[];
   followingsId?: string[];
+  friendsRequestFrom?: string[];
+  friendsRequestsTo?: string[];
+  friends?: string[];
+  blocked?: string[];
+  notCheckedFriendRequestsFrom?:string[];
   isAdmin?: boolean;
   desc?: string;
   city?: string;
@@ -15,20 +20,20 @@ export interface IUser {
   relationship?: number;
   birthDate?: Date;
 }
-export interface IFakeUser {
-  token?: string;
-  _id?: string;
-  username: string;
-  email?: string;
-  password?: string;
-  profilePicture?: string;
-  coverPicture?: string;
-  followersId?: string[];
-  followingsId?: string[];
-  isAdmin?: boolean;
-  desc?: string;
-  city?: string;
-  from?: string;
-  relationship?: number;
-  birthDate?: Date;
-}
+// export interface IFakeUser {
+//   token?: string;
+//   _id?: string;
+//   username: string;
+//   email?: string;
+//   password?: string;
+//   profilePicture?: string;
+//   coverPicture?: string;
+//   followersId?: string[];
+//   followingsId?: string[];
+//   isAdmin?: boolean;
+//   desc?: string;
+//   city?: string;
+//   from?: string;
+//   relationship?: number;
+//   birthDate?: Date;
+// }
