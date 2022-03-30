@@ -71,6 +71,8 @@ io.on("connection", (socket) => {
       }
     },
   );
+
+  
   // receive a message
 
   socket.on(
@@ -132,6 +134,32 @@ io.on("connection", (socket) => {
       }
     },
   );
+
+// sendFriendRequest
+socket.on(
+  "sendFriendRequest",
+  async (props: {
+    senderId: string;
+    receiverId: string;
+  }) => {
+    const { receiverId, senderId } = props;
+    try {
+      const receiver = getUser(receiverId);
+      const sender = getUser(senderId);
+
+      console.log({
+        "sendFriendRequest to": receiver,
+        from: sender,
+      });
+
+      io.to(receiver?.socketId).emit("getFriendRequest", 
+        senderId,
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
 
   // disconnection
 
